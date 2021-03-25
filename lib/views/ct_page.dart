@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import '../functions/image_picker.dart';
 import '../functions/httpRequest.dart';
@@ -12,6 +13,7 @@ class CTPage extends StatefulWidget {
 
 class _CTPageState extends State<CTPage> {
   File pickedImage;
+  Map outputData;
   ImgPicker imgPicker = ImgPicker();
   HttpOperations httpOperations = HttpOperations();
 
@@ -41,6 +43,17 @@ class _CTPageState extends State<CTPage> {
     } catch (e) {
       showErrDialog(e.toString());
     }
+  }
+
+  void predictFn() async {
+    EasyLoading.show(status: 'Loading....');
+    var data = await httpOperations.PostRequest(
+        image: pickedImage, urlEndpoint: 'predict_ct');
+    EasyLoading.dismiss();
+    setState(() {
+      outputData = data;
+    });
+    print(outputData);
   }
 
   @override
@@ -78,15 +91,49 @@ class _CTPageState extends State<CTPage> {
                 icon: Icon(Icons.image),
                 label: Text("Select Image")),
             ElevatedButton.icon(
-              onPressed: (pickedImage == null)
-                  ? null
-                  : () {
-                      httpOperations.PostRequest(
-                          image: pickedImage, urlEndpoint: 'predict_ct');
-                    },
+              onPressed: (pickedImage == null) ? null : predictFn,
               icon: Icon(Icons.analytics_outlined),
               label: Text("Predict"),
             ),
+            Container(
+              padding: EdgeInsets.only(top: 20),
+              width: double.infinity,
+              child: (outputData != null)
+                  ? Column(
+                      children: [
+                        Center(
+                          child: Text(
+                            'Prediction',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        DataTable(
+                          dataRowColor: MaterialStateProperty.resolveWith(
+                              (states) => Colors.grey[200]),
+                          columns: [
+                            DataColumn(label: Text("Model Name")),
+                            DataColumn(label: Text("Covid")),
+                            DataColumn(label: Text("Non Covid")),
+                          ],
+                          rows: [
+                            DataRow(
+                              cells: [
+                                DataCell(Text("MobileNetV2")),
+                                DataCell(Text(
+                                    '${outputData['covid'].toStringAsFixed(2)}' ??
+                                        '')),
+                                DataCell(Text(
+                                    '${(outputData['non_covid']).toStringAsFixed(2)}' ??
+                                        '')),
+                              ],
+                            )
+                          ],
+                        )
+                      ],
+                    )
+                  : Container(),
+            )
           ],
         ),
       ),
