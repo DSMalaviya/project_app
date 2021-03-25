@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-import './views/ct_page.dart';
 import './views/tabs_screen.dart';
 
 void main() {

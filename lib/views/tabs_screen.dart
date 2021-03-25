@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import './ct_page.dart';
 import './cxr_page.dart';
@@ -17,6 +18,7 @@ class _Tabs_screenState extends State<Tabs_screen> {
   int _selectedPageindex = 0;
 
   void _selectPage(int index) {
+    EasyLoading.dismiss();
     setState(() {
       _selectedPageindex = index;
     });

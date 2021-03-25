@@ -8,6 +8,7 @@ class HttpOperations {
   Future<Map> PostRequest(
       {@required File image, @required String urlEndpoint}) async {
     var uri = Uri.parse('http://10.0.2.2:5000/$urlEndpoint');
+    // var uri = Uri.parse('https://192.168.1.6:5000/$urlEndpoint');
     final bytes = image.readAsBytesSync();
     Map<String, String> data = {'image': base64Encode(bytes)};
 
