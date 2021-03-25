@@ -58,84 +58,80 @@ class _CTPageState extends State<CTPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('CT Prdictor'),
-        centerTitle: true,
-      ),
-      body: Container(
-        width: double.infinity,
-        padding: EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              width: double.infinity,
-              height: 200,
-              decoration: BoxDecoration(
-                  color: Colors.grey[100],
-                  borderRadius: BorderRadius.circular(20)),
-              child: (pickedImage != null)
-                  ? ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Image.file(
-                        pickedImage,
-                        fit: BoxFit.cover,
-                      ))
-                  : Center(
-                      child: Text('no image selected'),
-                    ),
-            ),
-            TextButton.icon(
-                onPressed: imagepickerFn,
-                icon: Icon(Icons.image),
-                label: Text("Select Image")),
-            ElevatedButton.icon(
-              onPressed: (pickedImage == null) ? null : predictFn,
-              icon: Icon(Icons.analytics_outlined),
-              label: Text("Predict"),
-            ),
-            Container(
-              padding: EdgeInsets.only(top: 20),
-              width: double.infinity,
-              child: (outputData != null)
-                  ? Column(
-                      children: [
-                        Center(
-                          child: Text(
-                            'Prediction',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            width: double.infinity,
+            height: 200,
+            decoration: BoxDecoration(
+                color: Colors.grey[100],
+                borderRadius: BorderRadius.circular(20)),
+            child: (pickedImage != null)
+                ? ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Image.file(
+                      pickedImage,
+                      fit: BoxFit.cover,
+                    ))
+                : Center(
+                    child: Text('no image selected'),
+                  ),
+          ),
+          TextButton.icon(
+              onPressed: imagepickerFn,
+              icon: Icon(Icons.image),
+              label: Text("Select Image")),
+          ElevatedButton.icon(
+            onPressed: (pickedImage == null) ? null : predictFn,
+            icon: Icon(Icons.analytics_outlined),
+            label: Text("Predict"),
+          ),
+          Container(
+            padding: EdgeInsets.only(top: 20),
+            width: double.infinity,
+            child: (outputData != null)
+                ? Column(
+                    children: [
+                      Center(
+                        child: Text(
+                          'Prediction',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        DataTable(
-                          dataRowColor: MaterialStateProperty.resolveWith(
-                              (states) => Colors.grey[200]),
-                          columns: [
-                            DataColumn(label: Text("Model Name")),
-                            DataColumn(label: Text("Covid")),
-                            DataColumn(label: Text("Non Covid")),
-                          ],
-                          rows: [
-                            DataRow(
-                              cells: [
-                                DataCell(Text("MobileNetV2")),
-                                DataCell(Text(
-                                    '${outputData['covid'].toStringAsFixed(2)}' ??
-                                        '')),
-                                DataCell(Text(
-                                    '${(outputData['non_covid']).toStringAsFixed(2)}' ??
-                                        '')),
-                              ],
-                            )
-                          ],
-                        )
-                      ],
-                    )
-                  : Container(),
-            )
-          ],
-        ),
+                      ),
+                      DataTable(
+                        dataRowColor: MaterialStateProperty.resolveWith(
+                            (states) => Colors.grey[200]),
+                        columns: [
+                          DataColumn(label: Text("Model Name")),
+                          DataColumn(label: Text("Covid")),
+                          DataColumn(label: Text("Non Covid")),
+                        ],
+                        rows: [
+                          DataRow(
+                            cells: [
+                              DataCell(Text("MobileNetV2")),
+                              DataCell(Text(
+                                  '${outputData['covid'].toStringAsFixed(2)}' ??
+                                      '')),
+                              DataCell(Text(
+                                  '${(outputData['non_covid']).toStringAsFixed(2)}' ??
+                                      '')),
+                            ],
+                          )
+                        ],
+                      )
+                    ],
+                  )
+                : Container(),
+          )
+        ],
       ),
     );
   }

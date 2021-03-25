@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import './views/ct_page.dart';
+import './views/tabs_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,10 +14,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: CTPage(),
+      theme: ThemeData(primarySwatch: Colors.purple, accentColor: Colors.amber),
+      home: Tabs_screen(),
       builder: EasyLoading.init(),
     );
   }
