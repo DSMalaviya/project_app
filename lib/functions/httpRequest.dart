@@ -1,0 +1,17 @@
+import 'dart:io';
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
+
+class HttpOperations {
+  Future<void> PostRequest(
+      {@required File image, @required String urlEndpoint}) async {
+    var uri = Uri.parse('http://10.0.2.2:5000/$urlEndpoint');
+    final bytes = image.readAsBytesSync();
+    Map<String, String> data = {'image': base64Encode(bytes)};
+
+    var response = await http.post(uri, body: json.encode(data));
+    print(json.decode(response.body));
+  }
+}
